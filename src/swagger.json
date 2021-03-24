@@ -2,10 +2,89 @@
   "openapi": "3.0.0",
   "info": {
     "title": "User management documentation",
-    "description": "This is an API for registering and listing users.",
+    "description": "This is an API for registering and listing users, developed for the Ignite - NodeJS bootcamp challenge from Rocketseat",
     "version": "1.0.0",
     "contact": {
+      "name": "Developer - Ian Ramos",
       "email": "ianramossantos@hotmail.com"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create an user",
+        "description": "Create a new default user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "property": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "user name sample",
+                  "description": "user name description sample"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The unique user ID"
+                    },
+                    "admin": {
+                      "type": "boolean",
+                      "description": "The user permission"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The user email"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "User creation date"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "User update date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists"
+          }
+        }
+      }
     }
   }
 }
