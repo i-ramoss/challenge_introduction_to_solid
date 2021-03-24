@@ -1,0 +1,11 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User management documentation",
+    "description": "This is an API for registering and listing users.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "ianramossantos@hotmail.com"
+    }
+  }
+}
