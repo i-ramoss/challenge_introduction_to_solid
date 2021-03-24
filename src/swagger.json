@@ -18,27 +18,32 @@
       "post": {
         "tags": ["Users"],
         "summary": "Create an user",
-        "description": "Create a new default user",
+        "description": "Create a new standard user who is not a administrator",
+        "operationId": "createUser",
         "requestBody": {
+          "description": "User object to be added to the application",
           "content": {
             "application/json": {
-              "schema": {
+              "schema": { 
                 "type": "object",
-                "property": {
+                "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Username to be registered"
                   },
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "description":"Email of the user to be registered"
                   }
                 },
                 "example": {
-                  "name": "user name sample",
-                  "description": "user name description sample"
+                  "name": "Flora Ramos",
+                  "email": "flora_ramos@admin.com"
                 }
               }
             }
-          }
+          },
+        "required": true
         },
         "responses": {
           "201": {
