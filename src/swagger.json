@@ -89,6 +89,71 @@
             "description": "User already exists"
           }
         }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "List all users",
+        "description": "List all registered users, if the user making the request is an administrator",
+        "operationId": "listAllUsers",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "description": "Id of the user making the request",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listing success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The unique user ID"
+                      },
+                      "admin": {
+                        "type": "boolean",
+                        "description": "User admin"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the user"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The user email"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "User creation date"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "User update date"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User don't have permission to list all users"
+          }
+        }
       }
     }
   }
