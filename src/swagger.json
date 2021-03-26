@@ -119,13 +119,7 @@
         "operationId": "returnOneUser",
         "parameters": [
           {
-            "name": "user_id",
-            "in": "path",
-            "description": "User id to be returned",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/id"
-            }
+            "$ref": "#/components/schemas/idOnPath"
           }
         ],
         "responses": {
@@ -135,6 +129,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "User not found",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Make a user an administrator",
+        "description": "Gives administrator permissions to a specific user",
+        "operationId": "makeUserAdmin",
+        "parameters": [
+          {
+            "$ref": "#/components/schemas/idOnPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user is now an administrator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAdminResponse"
                 }
               }
             }
@@ -189,6 +223,15 @@
         "type": "string",
         "format": "date-time",
         "description": "User update date"
+      },
+      "idOnPath": {
+        "name": "user_id",
+        "in": "path",
+        "description": "User id to be returned",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/id"
+        }
       },
       "User": {
         "type": "object",
@@ -258,6 +301,31 @@
           },
           "admin": {
             "$ref": "#/components/schemas/admin"
+          },
+          "name": {
+            "$ref": "#/components/schemas/name"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/created_at"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/updated_at"
+          }
+        }
+      },
+      "UserAdminResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "The user permission",
+            "example": true
           },
           "name": {
             "$ref": "#/components/schemas/name"
