@@ -13,6 +13,12 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "Local server"
+    }
+  ],
   "paths": {
     "/users": {
       "post": {
@@ -20,26 +26,13 @@
         "summary": "Create an user",
         "description": "Create a new standard user who is not a administrator",
         "operationId": "createUser",
+        "parameters": [],
         "requestBody": {
           "description": "User object to be added to the application",
           "content": {
             "application/json": {
               "schema": { 
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Username to be registered"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description":"Email of the user to be registered"
-                  }
-                },
-                "example": {
-                  "name": "Flora Ramos",
-                  "email": "flora_ramos@admin.com"
-                }
+                "$ref": "#/components/schemas/User"
               }
             }
           },
@@ -47,46 +40,29 @@
         },
         "responses": {
           "201": {
-            "description": "User created",
+            "description": "The user has been created",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "uuid": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "The unique user ID"
-                    },
-                    "admin": {
-                      "type": "boolean",
-                      "description": "The user permission"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "The name of user"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "The user email"
-                    },
-                    "created_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "User creation date"
-                    },
-                    "updated_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "User update date"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserCreatedResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "User already exists"
+            "description": "The user is already registered in the system",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "User already exists",
+                  "code": "400",
+                  "error": "Bad Request"
+                }
+              }
+            }
           }
         }
       },
@@ -102,8 +78,7 @@
             "description": "Id of the user making the request",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/uuid"
             }
           }
         ],
@@ -113,45 +88,139 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "uuid": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "The unique user ID"
-                      },
-                      "admin": {
-                        "type": "boolean",
-                        "description": "User admin"
-                      },
-                      "name": {
-                        "type": "string",
-                        "description": "The name of the user"
-                      },
-                      "email": {
-                        "type": "string",
-                        "description": "The user email"
-                      },
-                      "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "User creation date"
-                      },
-                      "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "User update date"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/ListedUsersResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "User don't have permission to list all users"
+            "description": "User don't have permission to list all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "You don't have permission to do that",
+                  "code": "400",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "name": {
+        "type": "string",
+        "description": "Username to be registered",
+        "example": "Flora Ramos"
+      },
+      "email": {
+        "type": "string",
+        "description":"Email of the user to be registered",
+        "example": "flora_ramos@user.com"
+      },
+      "uuid": {
+        "type": "string",
+        "format": "uuid",
+        "description": "The unique user ID"
+      },
+      "admin": {
+        "type": "boolean",
+        "description": "The user permission",
+        "example": false
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "User creation date"
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "User update date"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/name"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          }
+        }
+      },
+      "UserCreatedResponse": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "admin": {
+            "$ref": "#/components/schemas/admin"
+          },
+          "name": {
+            "$ref": "#/components/schemas/name"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/created_at"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/updated_at"
+          }
+        }
+      },
+      "ListedUsersResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "$ref": "#/components/schemas/uuid"
+            },
+            "admin": {
+              "$ref": "#/components/schemas/admin"
+            },
+            "name": {
+              "$ref": "#/components/schemas/name"
+            },
+            "email": {
+              "$ref": "#/components/schemas/email"
+            },
+            "created_at": {
+              "$ref": "#/components/schemas/created_at"
+            },
+            "updated_at": {
+              "$ref": "#/components/schemas/updated_at"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "documentation": {
+            "type": "string"
           }
         }
       }
