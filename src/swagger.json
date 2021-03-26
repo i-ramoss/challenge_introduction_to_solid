@@ -78,7 +78,7 @@
             "description": "Id of the user making the request",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/uuid"
+              "$ref": "#/components/schemas/id"
             }
           }
         ],
@@ -110,6 +110,52 @@
           }
         }
       }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Returns a specific user",
+        "description": "Returns data for a single user identified by the ID in the parameters",
+        "operationId": "returnOneUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User id to be returned",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user data returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "User not found",
+                  "code": "404",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -124,7 +170,7 @@
         "description":"Email of the user to be registered",
         "example": "flora_ramos@user.com"
       },
-      "uuid": {
+      "id": {
         "type": "string",
         "format": "uuid",
         "description": "The unique user ID"
@@ -158,8 +204,8 @@
       "UserCreatedResponse": {
         "type": "object",
         "properties": {
-          "uuid": {
-            "$ref": "#/components/schemas/uuid"
+          "id": {
+            "$ref": "#/components/schemas/id"
           },
           "admin": {
             "$ref": "#/components/schemas/admin"
@@ -183,8 +229,8 @@
         "items": {
           "type": "object",
           "properties": {
-            "uuid": {
-              "$ref": "#/components/schemas/uuid"
+            "id": {
+              "$ref": "#/components/schemas/id"
             },
             "admin": {
               "$ref": "#/components/schemas/admin"
@@ -201,6 +247,29 @@
             "updated_at": {
               "$ref": "#/components/schemas/updated_at"
             }
+          }
+        }
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "admin": {
+            "$ref": "#/components/schemas/admin"
+          },
+          "name": {
+            "$ref": "#/components/schemas/name"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/created_at"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/updated_at"
           }
         }
       },
